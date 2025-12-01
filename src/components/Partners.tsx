@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 
 export default function Partners() {
   const partners = [
@@ -12,84 +12,39 @@ export default function Partners() {
 
   const doubledPartners = [...partners, ...partners];
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [currentTranslate, setCurrentTranslate] = useState(0);
-  const [prevTranslate, setPrevTranslate] = useState(0);
-  const animationRef = useRef<number | null>(null);
+  const isDraggingRef = useRef(false);
+  const startXRef = useRef(0);
+  const scrollLeftRef = useRef(0);
 
-  useEffect(() => {
-    const slider = scrollRef.current;
-    if (!slider) return;
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!scrollRef.current) return;
+    isDraggingRef.current = true;
+    startXRef.current = e.pageX - scrollRef.current.offsetLeft;
+    scrollLeftRef.current = scrollRef.current.scrollLeft;
+    scrollRef.current.style.cursor = 'grabbing';
+  };
 
-    const handleMouseDown = (e: MouseEvent) => {
-      setIsDragging(true);
-      setStartX(e.clientX);
-      if (animationRef.current !== null) {
-        cancelAnimationFrame(animationRef.current);
-      }
-      slider.style.animationPlayState = 'paused';
-      const transform = window.getComputedStyle(slider).transform;
-      if (transform !== 'none') {
-        const matrix = new DOMMatrix(transform);
-        setPrevTranslate(matrix.m41);
-        setCurrentTranslate(matrix.m41);
-      }
-    };
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDraggingRef.current || !scrollRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollRef.current.offsetLeft;
+    const walk = (x - startXRef.current) * 2;
+    scrollRef.current.scrollLeft = scrollLeftRef.current - walk;
+  };
 
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!isDragging) return;
-      e.preventDefault();
-      const currentX = e.clientX;
-      const diff = currentX - startX;
-      const newTranslate = prevTranslate + diff;
-      setCurrentTranslate(newTranslate);
+  const handleMouseUp = () => {
+    isDraggingRef.current = false;
+    if (scrollRef.current) {
+      scrollRef.current.style.cursor = 'grab';
+    }
+  };
 
-      if (slider) {
-        slider.style.transform = `translateX(${newTranslate}px)`;
-      }
-    };
-
-    const handleMouseUp = () => {
-      setIsDragging(false);
-      setPrevTranslate(currentTranslate);
-      if (slider) {
-        slider.style.animation = 'none';
-        setTimeout(() => {
-          if (slider) {
-            slider.style.animation = '';
-          }
-        }, 10);
-      }
-    };
-
-    const handleMouseLeave = () => {
-      if (isDragging) {
-        setIsDragging(false);
-        setPrevTranslate(currentTranslate);
-        if (slider) {
-          slider.style.animation = 'none';
-          setTimeout(() => {
-            if (slider) {
-              slider.style.animation = '';
-            }
-          }, 10);
-        }
-      }
-    };
-
-    slider.addEventListener('mousedown', handleMouseDown);
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
-    slider.addEventListener('mouseleave', handleMouseLeave);
-
-    return () => {
-      slider.removeEventListener('mousedown', handleMouseDown);
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-      slider.removeEventListener('mouseleave', handleMouseLeave);
-    };
-  }, [isDragging, startX, currentTranslate, prevTranslate]);
+  const handleMouseLeave = () => {
+    isDraggingRef.current = false;
+    if (scrollRef.current) {
+      scrollRef.current.style.cursor = 'grab';
+    }
+  };
 
   return (
     <section className="py-16 bg-gradient-to-br from-slate-50 to-slate-100 overflow-hidden">
@@ -109,8 +64,12 @@ export default function Partners() {
 
           <div
             ref={scrollRef}
-            className={`flex animate-scroll select-none ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
-            style={{ userSelect: 'none' }}
+            className="flex overflow-x-auto scrollbar-hide select-none cursor-grab active:cursor-grabbing scroll-smooth"
+            style={{ userSelect: 'none', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseLeave}
           >
             {doubledPartners.map((partner, index) => {
               const content = (
@@ -139,7 +98,7 @@ export default function Partners() {
                     className="flex-shrink-0 mx-8 bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
                     style={{ width: '220px', minWidth: '220px' }}
                     onClick={(e) => {
-                      if (isDragging) {
+                      if (isDraggingRef.current) {
                         e.preventDefault();
                       }
                     }}
@@ -164,21 +123,8 @@ export default function Partners() {
       </div>
 
       <style>{`
-        @keyframes scroll {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
-
-        .animate-scroll {
-          animation: scroll 30s linear infinite;
-        }
-
-        .animate-scroll:hover {
-          animation-play-state: paused;
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
         }
       `}</style>
     </section>
