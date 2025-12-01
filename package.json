@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prebuild": "node -e \"const fs=require('fs');const p='./public';fs.readdirSync(p).filter(f=>f.includes(' ')||f.includes('\\'')||f.includes('é')||f.includes('à')).forEach(f=>fs.unlinkSync(p+'/'+f))\"",
-    "build": "vite build",
+    "prebuild": "node clean-filenames.cjs",
+    "build": "node clean-filenames.cjs && vite build",
+    "postbuild": "node clean-filenames.cjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.app.json"
