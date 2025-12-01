@@ -29,6 +29,8 @@ export default function SignUp() {
                 marginHeight={0}
                 marginWidth={0}
                 className="w-full"
+                title="Sign Up Form"
+                sandbox="allow-scripts allow-forms allow-same-origin allow-popups"
               >
                 Loading…
               </iframe>
