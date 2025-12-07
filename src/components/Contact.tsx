@@ -17,26 +17,38 @@ export default function Contact() {
     setIsSubmitting(true);
     setSubmitStatus('idle');
 
-    try {
-      const { error } = await supabase
-        .from('contact_submissions')
-        .insert([formData]);
+    const maxRetries = 3;
+    let attempt = 0;
 
-      if (error) {
-        console.error('Supabase error:', error);
-        throw error;
+    while (attempt < maxRetries) {
+      try {
+        const { error } = await supabase
+          .from('contact_submissions')
+          .insert([formData]);
+
+        if (error) {
+          console.error('Supabase error:', error);
+          throw error;
+        }
+
+        setSubmitStatus('success');
+        setFormData({ name: '', email: '', subject: '', message: '' });
+        setTimeout(() => setSubmitStatus('idle'), 5000);
+        return;
+      } catch (error) {
+        attempt++;
+        console.error(`Attempt ${attempt} failed:`, error);
+
+        if (attempt >= maxRetries) {
+          console.error('All retry attempts failed');
+          setSubmitStatus('error');
+        } else {
+          await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+        }
       }
-
-      setSubmitStatus('success');
-      setFormData({ name: '', email: '', subject: '', message: '' });
-
-      setTimeout(() => setSubmitStatus('idle'), 5000);
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      setSubmitStatus('error');
-    } finally {
-      setIsSubmitting(false);
     }
+
+    setIsSubmitting(false);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

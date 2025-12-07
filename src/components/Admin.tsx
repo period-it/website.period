@@ -25,48 +25,86 @@ export default function Admin() {
 
   const loadSubmissions = async () => {
     setLoading(true);
-    try {
-      const { data, error } = await supabase
-        .from('contact_submissions')
-        .select('*')
-        .eq('archived', showArchived)
-        .order('created_at', { ascending: false });
+    setError('');
 
-      if (error) throw error;
-      setSubmissions(data || []);
-    } catch (err) {
-      console.error('Error loading submissions:', err);
-      setError('Failed to load submissions');
-    } finally {
-      setLoading(false);
+    const maxRetries = 3;
+    let attempt = 0;
+
+    while (attempt < maxRetries) {
+      try {
+        const { data, error } = await supabase
+          .from('contact_submissions')
+          .select('*')
+          .eq('archived', showArchived)
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        setSubmissions(data || []);
+        setLoading(false);
+        return;
+      } catch (err) {
+        attempt++;
+        console.error(`Load attempt ${attempt} failed:`, err);
+
+        if (attempt >= maxRetries) {
+          console.error('All retry attempts failed');
+          setError('Failed to load submissions. Click refresh to retry.');
+        } else {
+          await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+        }
+      }
     }
+
+    setLoading(false);
   };
 
   const toggleRead = async (id: string, currentStatus: boolean) => {
-    try {
-      const { error } = await supabase
-        .from('contact_submissions')
-        .update({ read: !currentStatus })
-        .eq('id', id);
+    const maxRetries = 3;
+    let attempt = 0;
 
-      if (error) throw error;
-      loadSubmissions();
-    } catch (err) {
-      console.error('Error updating submission:', err);
+    while (attempt < maxRetries) {
+      try {
+        const { error } = await supabase
+          .from('contact_submissions')
+          .update({ read: !currentStatus })
+          .eq('id', id);
+
+        if (error) throw error;
+        loadSubmissions();
+        return;
+      } catch (err) {
+        attempt++;
+        console.error(`Toggle read attempt ${attempt} failed:`, err);
+
+        if (attempt < maxRetries) {
+          await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+        }
+      }
     }
   };
 
   const toggleArchive = async (id: string, currentStatus: boolean) => {
-    try {
-      const { error } = await supabase
-        .from('contact_submissions')
-        .update({ archived: !currentStatus })
-        .eq('id', id);
+    const maxRetries = 3;
+    let attempt = 0;
 
-      if (error) throw error;
-      loadSubmissions();
-    } catch (err) {
-      console.error('Error archiving submission:', err);
+    while (attempt < maxRetries) {
+      try {
+        const { error } = await supabase
+          .from('contact_submissions')
+          .update({ archived: !currentStatus })
+          .eq('id', id);
+
+        if (error) throw error;
+        loadSubmissions();
+        return;
+      } catch (err) {
+        attempt++;
+        console.error(`Toggle archive attempt ${attempt} failed:`, err);
+
+        if (attempt < maxRetries) {
+          await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+        }
+      }
     }
   };
 
@@ -143,6 +181,18 @@ export default function Admin() {
             </button>
           </div>
         </div>
+
+        {error && (
+          <div className="bg-red-500/20 border border-red-500/50 text-white px-6 py-4 rounded-2xl mb-6 flex items-center justify-between">
+            <span>{error}</span>
+            <button
+              onClick={loadSubmissions}
+              className="bg-white/20 px-4 py-2 rounded-full hover:bg-white/30 transition-all"
+            >
+              Retry
+            </button>
+          </div>
+        )}
 
         {loading ? (
           <div className="text-center text-white text-xl py-12">Loading...</div>
