@@ -54,6 +54,12 @@ export default function Navigation() {
               <Globe size={20} />
               {language === 'en' ? 'IT' : 'EN'}
             </button>
+            <button
+              onClick={() => scrollToSection('signup')}
+              className="bg-period-coral text-white px-6 py-2.5 rounded-full hover:bg-period-coral-dark transition-all transform hover:scale-105"
+            >
+              {t.signUp.title}
+            </button>
           </div>
 
           <button
@@ -89,6 +95,12 @@ export default function Navigation() {
             >
               <Globe size={20} />
               {language === 'en' ? 'Italiano' : 'English'}
+            </button>
+            <button
+              onClick={() => scrollToSection('signup')}
+              className="block w-full bg-period-coral text-white px-6 py-2.5 rounded-full text-center"
+            >
+              {t.signUp.title}
             </button>
           </div>
         </div>
