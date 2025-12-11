@@ -79,7 +79,7 @@ export const translations = {
       spreadDesc: 'Share our mission on social media'
     },
     signUp: {
-      title: 'Sign Up',
+      title: 'Stay Updated',
       subtitle: 'Get news about new dispenser locations and ways to help',
       emailPlaceholder: 'your.email@unibocconi.it',
       cta: 'Sign Up',
@@ -227,7 +227,7 @@ export const translations = {
       spreadDesc: 'Condividi la nostra missione sui social media'
     },
     signUp: {
-      title: 'Iscriviti',
+      title: 'Rimani Aggiornato',
       subtitle: 'Ricevi notizie su nuove posizioni dei distributori e modi per aiutare',
       emailPlaceholder: 'tua.email@unibocconi.it',
       cta: 'Iscriviti',
