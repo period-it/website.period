@@ -1,27 +1,24 @@
 import { Package, Target, Truck } from 'lucide-react';
-import { useLanguage } from '../contexts/LanguageContext';
 
 export default function Solution() {
-  const { t } = useLanguage();
-
   const steps = [
     {
       icon: Package,
       number: "1",
-      title: t.solution.feature1,
-      description: t.solution.feature1Desc
+      title: "Choose Your Products",
+      description: "Pads, tampons, or mixed packs — always certified and safe."
     },
     {
       icon: Target,
       number: "2",
-      title: t.solution.feature2,
-      description: t.solution.feature2Desc
+      title: "Brands Fund Your Delivery",
+      description: "Advertisers cover the cost through non-intrusive interactions."
     },
     {
       icon: Truck,
       number: "3",
-      title: t.solution.feature3,
-      description: t.solution.feature3Desc
+      title: "Get Free Monthly Deliveries",
+      description: "No subscription. No hidden fees."
     }
   ];
 
@@ -30,11 +27,8 @@ export default function Solution() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-period-burgundy mb-6">
-            {t.solution.title}
+            We turn brand advertising into menstrual access.
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            {t.solution.subtitle}
-          </p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">

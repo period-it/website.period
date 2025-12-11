@@ -1,24 +1,21 @@
 import { CheckCircle, Package, Target, DollarSign } from 'lucide-react';
-import { useLanguage } from '../contexts/LanguageContext';
 
 export default function HowItWorks() {
-  const { t } = useLanguage();
-
   const steps = [
     {
       icon: Package,
-      title: t.howItWorks.step1,
-      description: t.howItWorks.step1Desc
+      title: "Select Your Preferences",
+      description: "Choose flow levels and product types that match your needs."
     },
     {
       icon: Target,
-      title: t.howItWorks.step2,
-      description: t.howItWorks.step2Desc
+      title: "Pick Brand Categories",
+      description: "Select advertiser categories: beauty, wellness, fashion, lifestyle, or student essentials."
     },
     {
       icon: DollarSign,
-      title: t.howItWorks.step3,
-      description: t.howItWorks.step3Desc
+      title: "Brands Cover All Costs",
+      description: "Simple interactions with brand content redirect advertising budgets to menstrual access."
     }
   ];
 
@@ -27,8 +24,11 @@ export default function HowItWorks() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-period-burgundy mb-6">
-            {t.howItWorks.title}
+            How It Works
           </h2>
+          <p className="text-xl text-gray-700 max-w-3xl mx-auto">
+            Three simple steps to free menstrual products
+          </p>
         </div>
 
         <div className="space-y-8">

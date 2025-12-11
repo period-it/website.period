@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
 import { supabase, ContactSubmission } from '../lib/supabase';
 import { Lock, Mail, Calendar, CheckCircle, Circle, RefreshCw, Archive, Eye, EyeOff } from 'lucide-react';
-import { useLanguage } from '../contexts/LanguageContext';
 
 export default function Admin() {
-  const { t } = useLanguage();
   const [password, setPassword] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [submissions, setSubmissions] = useState<ContactSubmission[]>([]);
@@ -21,7 +19,7 @@ export default function Admin() {
       setError('');
       loadSubmissions();
     } else {
-      setError(t.admin.incorrectPassword);
+      setError('Incorrect password');
     }
   };
 
@@ -50,7 +48,7 @@ export default function Admin() {
 
         if (attempt >= maxRetries) {
           console.error('All retry attempts failed');
-          setError(t.admin.loadError);
+          setError('Failed to load submissions. Click refresh to retry.');
         } else {
           await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
         }
@@ -122,8 +120,8 @@ export default function Admin() {
         <div className="bg-white/10 backdrop-blur-sm p-8 rounded-3xl border border-white/20 w-full max-w-md">
           <div className="text-center mb-8">
             <Lock className="w-16 h-16 text-white mx-auto mb-4" />
-            <h1 className="text-3xl font-bold text-white mb-2">{t.admin.title}</h1>
-            <p className="text-white/80">{t.admin.subtitle}</p>
+            <h1 className="text-3xl font-bold text-white mb-2">Admin Access</h1>
+            <p className="text-white/80">Enter password to view contact submissions</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
@@ -147,7 +145,7 @@ export default function Admin() {
               type="submit"
               className="w-full bg-period-coral text-white px-6 py-3 rounded-full font-semibold hover:bg-period-coral-dark transition-all transform hover:scale-105"
             >
-              {t.admin.login}
+              Login
             </button>
           </form>
         </div>
@@ -159,27 +157,27 @@ export default function Admin() {
     <div className="min-h-screen bg-gradient-to-br from-period-burgundy to-period-burgundy-light p-4 sm:p-8">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-4xl font-bold text-white">{t.admin.contactSubmissions}</h1>
+          <h1 className="text-4xl font-bold text-white">Contact Submissions</h1>
           <div className="flex gap-3">
             <button
               onClick={() => { setShowArchived(!showArchived); }}
               className="bg-white/20 text-white px-6 py-2 rounded-full hover:bg-white/30 transition-all flex items-center gap-2"
             >
               {showArchived ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
-              {showArchived ? t.admin.showActive : t.admin.showArchived}
+              {showArchived ? 'Show Active' : 'Show Archived'}
             </button>
             <button
               onClick={loadSubmissions}
               className="bg-white/20 text-white px-6 py-2 rounded-full hover:bg-white/30 transition-all flex items-center gap-2"
             >
               <RefreshCw className="w-4 h-4" />
-              {t.admin.refresh}
+              Refresh
             </button>
             <button
               onClick={() => setIsAuthenticated(false)}
               className="bg-white/20 text-white px-6 py-2 rounded-full hover:bg-white/30 transition-all"
             >
-              {t.admin.logout}
+              Logout
             </button>
           </div>
         </div>
@@ -191,17 +189,17 @@ export default function Admin() {
               onClick={loadSubmissions}
               className="bg-white/20 px-4 py-2 rounded-full hover:bg-white/30 transition-all"
             >
-              {t.admin.retry}
+              Retry
             </button>
           </div>
         )}
 
         {loading ? (
-          <div className="text-center text-white text-xl py-12">{t.admin.loading}</div>
+          <div className="text-center text-white text-xl py-12">Loading...</div>
         ) : submissions.length === 0 ? (
           <div className="bg-white/10 backdrop-blur-sm p-12 rounded-3xl border border-white/20 text-center text-white">
             <Mail className="w-16 h-16 mx-auto mb-4 opacity-50" />
-            <p className="text-xl">{t.admin.noSubmissions}</p>
+            <p className="text-xl">No submissions yet</p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -219,7 +217,7 @@ export default function Admin() {
                       <button
                         onClick={() => toggleRead(submission.id, submission.read)}
                         className="text-white/70 hover:text-white transition-colors"
-                        title={submission.read ? t.admin.markUnread : t.admin.markRead}
+                        title={submission.read ? 'Mark as unread' : 'Mark as read'}
                       >
                         {submission.read ? (
                           <CheckCircle className="w-5 h-5" />
@@ -237,20 +235,20 @@ export default function Admin() {
                   <button
                     onClick={() => toggleArchive(submission.id, showArchived)}
                     className="bg-white/20 text-white px-4 py-2 rounded-full hover:bg-white/30 transition-all flex items-center gap-2"
-                    title={showArchived ? t.admin.unarchive : t.admin.archive}
+                    title={showArchived ? 'Unarchive' : 'Archive'}
                   >
                     <Archive className="w-4 h-4" />
-                    {showArchived ? t.admin.unarchive : t.admin.archive}
+                    {showArchived ? 'Unarchive' : 'Archive'}
                   </button>
                 </div>
 
                 <div className="mb-3">
-                  <h4 className="text-sm font-semibold text-white/70 mb-1">{t.admin.subject}</h4>
+                  <h4 className="text-sm font-semibold text-white/70 mb-1">Subject</h4>
                   <p className="text-white font-semibold">{submission.subject}</p>
                 </div>
 
                 <div>
-                  <h4 className="text-sm font-semibold text-white/70 mb-1">{t.admin.message}</h4>
+                  <h4 className="text-sm font-semibold text-white/70 mb-1">Message</h4>
                   <p className="text-white whitespace-pre-wrap">{submission.message}</p>
                 </div>
               </div>
