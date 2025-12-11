@@ -1,8 +1,6 @@
 import { useRef } from 'react';
-import { useLanguage } from '../contexts/LanguageContext';
 
 export default function Partners() {
-  const { t } = useLanguage();
   const partners = [
     { name: 'Women in Business - Bocconi', logo: '/wib-logo.jpeg', link: null },
     { name: 'TEF - Tech Europe Foundation', logo: '/tech-logo.jpeg', link: null },
@@ -53,10 +51,10 @@ export default function Partners() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            {t.partners.title}
+            Our Partners
           </h2>
           <p className="text-lg text-gray-600">
-            {t.partners.subtitle}
+            Organizations helping us make a difference
           </p>
         </div>
 

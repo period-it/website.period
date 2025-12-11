@@ -1,10 +1,8 @@
 import { useState } from 'react';
 import { Mail, Instagram } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-import { useLanguage } from '../contexts/LanguageContext';
 
 export default function Contact() {
-  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -65,10 +63,10 @@ export default function Contact() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            {t.contact.title}
+            Get in Touch
           </h2>
           <p className="text-xl text-white/90">
-            {t.contact.subtitle}
+            Have questions? Want to partner with us? We'd love to hear from you.
           </p>
         </div>
 
@@ -76,17 +74,17 @@ export default function Contact() {
           <form onSubmit={handleSubmit} className="space-y-6">
             {submitStatus === 'success' && (
               <div className="bg-green-500/20 border border-green-500/50 text-white px-4 py-3 rounded-xl">
-                {t.contact.success}
+                Message sent successfully! We'll get back to you soon.
               </div>
             )}
             {submitStatus === 'error' && (
               <div className="bg-red-500/20 border border-red-500/50 text-white px-4 py-3 rounded-xl">
-                {t.contact.error}
+                Failed to send message. Please try again.
               </div>
             )}
 
             <div>
-              <label htmlFor="name" className="block text-sm font-semibold mb-2">{t.contact.name}</label>
+              <label htmlFor="name" className="block text-sm font-semibold mb-2">Name</label>
               <input
                 type="text"
                 id="name"
@@ -94,11 +92,11 @@ export default function Contact() {
                 onChange={handleChange}
                 required
                 className="w-full px-4 py-3 rounded-xl bg-white/20 border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-period-coral"
-                placeholder={t.contact.namePlaceholder}
+                placeholder="Your name"
               />
             </div>
             <div>
-              <label htmlFor="email" className="block text-sm font-semibold mb-2">{t.contact.email}</label>
+              <label htmlFor="email" className="block text-sm font-semibold mb-2">Email</label>
               <input
                 type="email"
                 id="email"
@@ -106,11 +104,11 @@ export default function Contact() {
                 onChange={handleChange}
                 required
                 className="w-full px-4 py-3 rounded-xl bg-white/20 border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-period-coral"
-                placeholder={t.contact.emailPlaceholder}
+                placeholder="your.email@example.com"
               />
             </div>
             <div>
-              <label htmlFor="subject" className="block text-sm font-semibold mb-2">{t.contact.subject}</label>
+              <label htmlFor="subject" className="block text-sm font-semibold mb-2">Subject</label>
               <input
                 type="text"
                 id="subject"
@@ -118,11 +116,11 @@ export default function Contact() {
                 onChange={handleChange}
                 required
                 className="w-full px-4 py-3 rounded-xl bg-white/20 border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-period-coral"
-                placeholder={t.contact.subjectPlaceholder}
+                placeholder="What's this about?"
               />
             </div>
             <div>
-              <label htmlFor="message" className="block text-sm font-semibold mb-2">{t.contact.message}</label>
+              <label htmlFor="message" className="block text-sm font-semibold mb-2">Message</label>
               <textarea
                 id="message"
                 rows={6}
@@ -130,7 +128,7 @@ export default function Contact() {
                 onChange={handleChange}
                 required
                 className="w-full px-4 py-3 rounded-xl bg-white/20 border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-period-coral resize-none"
-                placeholder={t.contact.messagePlaceholder}
+                placeholder="Tell us more..."
               ></textarea>
             </div>
             <button
@@ -138,7 +136,7 @@ export default function Contact() {
               disabled={isSubmitting}
               className="w-full bg-period-coral text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-period-coral-dark transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? t.contact.sending : t.contact.send}
+              {isSubmitting ? 'Sending...' : 'Send Message'}
             </button>
           </form>
         </div>
@@ -157,14 +155,14 @@ export default function Contact() {
             </a>
           </div>
           <p className="text-white/70 text-sm mt-8">
-            {t.contact.disclaimer}
+            Founded by students at Bocconi University. Independent project; not officially endorsed by the university.
           </p>
         </div>
       </div>
 
       <footer className="mt-16 pt-8 border-t border-white/20 text-center">
         <p className="text-white/70">
-          {t.contact.footer}
+          © 2025 PERIOD. All rights reserved. Ending the Cycle of Inequality.
         </p>
       </footer>
     </section>

@@ -1,25 +1,22 @@
 import { AlertCircle, DollarSign, Users, TrendingDown } from 'lucide-react';
-import { useLanguage } from '../contexts/LanguageContext';
 
 export default function Problem() {
-  const { t } = useLanguage();
-
   const problems = [
     {
       icon: DollarSign,
-      text: t.problem.stat1
+      text: "Menstrual products are expensive, unavoidable, and disproportionately burden women."
     },
     {
       icon: Users,
-      text: t.problem.stat2
+      text: "Students often pay €150–€200/year for essentials."
     },
     {
       icon: TrendingDown,
-      text: t.problem.stat3
+      text: "Brands waste ad budgets on low-impact impressions."
     },
     {
       icon: AlertCircle,
-      text: t.problem.description
+      text: "No one should pay for a biological necessity."
     }
   ];
 
@@ -28,10 +25,10 @@ export default function Problem() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-period-burgundy mb-6">
-            {t.problem.title}
+            A silent inequality hidden in plain sight.
           </h2>
           <p className="text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed">
-            {t.problem.subtitle}
+            Every month, millions of women pay for menstrual products — a recurring, non-negotiable cost that deepens gender inequality. At the same time, brands spend billions on ads that are ignored, wasted, or poorly targeted. These two broken systems coexist, but no one has ever connected them — until now.
           </p>
         </div>
 
