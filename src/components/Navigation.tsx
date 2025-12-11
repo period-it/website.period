@@ -1,8 +1,12 @@
 import { useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Languages } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
+import { translations } from '../translations/translations';
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { language, toggleLanguage } = useLanguage();
+  const t = translations[language].navigation;
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -27,25 +31,33 @@ export default function Navigation() {
 
           <div className="hidden md:flex items-center space-x-8">
             <button onClick={() => scrollToSection('home')} className="text-gray-700 hover:text-period-coral transition-colors">
-              Home
+              {t.home}
             </button>
             <button onClick={() => scrollToSection('about')} className="text-gray-700 hover:text-period-coral transition-colors">
-              About
+              {t.about}
             </button>
             <button onClick={() => scrollToSection('how-it-works')} className="text-gray-700 hover:text-period-coral transition-colors">
-              How It Works
+              {t.howItWorks}
             </button>
             <button onClick={() => scrollToSection('advertisers')} className="text-gray-700 hover:text-period-coral transition-colors">
-              For Advertisers
+              {t.forAdvertisers}
             </button>
             <button onClick={() => scrollToSection('faq')} className="text-gray-700 hover:text-period-coral transition-colors">
-              FAQ
+              {t.faq}
+            </button>
+            <button
+              onClick={toggleLanguage}
+              className="flex items-center space-x-1 text-gray-700 hover:text-period-coral transition-colors"
+              title={language === 'en' ? 'Switch to Italian' : 'Passa all\'inglese'}
+            >
+              <Languages size={20} />
+              <span className="font-semibold">{language === 'en' ? 'IT' : 'EN'}</span>
             </button>
             <button
               onClick={() => scrollToSection('signup')}
               className="bg-period-coral text-white px-6 py-2.5 rounded-full hover:bg-period-coral-dark transition-all transform hover:scale-105"
             >
-              Sign Up
+              {t.signUp}
             </button>
           </div>
 
@@ -62,25 +74,32 @@ export default function Navigation() {
         <div className="md:hidden bg-white border-t border-gray-100">
           <div className="px-4 py-4 space-y-3">
             <button onClick={() => scrollToSection('home')} className="block w-full text-left py-2 text-gray-700">
-              Home
+              {t.home}
             </button>
             <button onClick={() => scrollToSection('about')} className="block w-full text-left py-2 text-gray-700">
-              About
+              {t.about}
             </button>
             <button onClick={() => scrollToSection('how-it-works')} className="block w-full text-left py-2 text-gray-700">
-              How It Works
+              {t.howItWorks}
             </button>
             <button onClick={() => scrollToSection('advertisers')} className="block w-full text-left py-2 text-gray-700">
-              For Advertisers
+              {t.forAdvertisers}
             </button>
             <button onClick={() => scrollToSection('faq')} className="block w-full text-left py-2 text-gray-700">
-              FAQ
+              {t.faq}
+            </button>
+            <button
+              onClick={toggleLanguage}
+              className="flex items-center space-x-2 w-full py-2 text-gray-700 hover:text-period-coral"
+            >
+              <Languages size={20} />
+              <span>{language === 'en' ? 'Italiano' : 'English'}</span>
             </button>
             <button
               onClick={() => scrollToSection('signup')}
               className="block w-full bg-period-coral text-white px-6 py-2.5 rounded-full text-center"
             >
-              Sign Up
+              {t.signUp}
             </button>
           </div>
         </div>

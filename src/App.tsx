@@ -11,6 +11,7 @@ import FAQ from './components/FAQ';
 import Contact from './components/Contact';
 import Navigation from './components/Navigation';
 import Partners from './components/Partners';
+import { LanguageProvider } from './contexts/LanguageContext';
 
 const Admin = lazy(() => import('./components/Admin'));
 
@@ -26,20 +27,22 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      <Navigation />
-      <Hero />
-      <Problem />
-      <StudentVoices />
-      <JoinMovement />
-      <About />
-      <HowItWorks />
-      <Advertisers />
-      <SignUp />
-      <FAQ />
-      <Partners />
-      <Contact />
-    </div>
+    <LanguageProvider>
+      <div className="min-h-screen bg-white">
+        <Navigation />
+        <Hero />
+        <Problem />
+        <StudentVoices />
+        <JoinMovement />
+        <About />
+        <HowItWorks />
+        <Advertisers />
+        <SignUp />
+        <FAQ />
+        <Partners />
+        <Contact />
+      </div>
+    </LanguageProvider>
   );
 }
 
